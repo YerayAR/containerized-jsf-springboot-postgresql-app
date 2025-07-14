@@ -1,6 +1,23 @@
-# containerized-jsf-springboot-postgresql-app
+# 🚀 Containerized JSF + Spring Boot + PostgreSQL Application
 
-This project provides a simple multi-container setup with a JSF frontend, a Spring Boot backend and a PostgreSQL database.
+Una aplicación web full-stack que demuestra un frontend JSF con backend Spring Boot y base de datos PostgreSQL, todo containerizado con Docker.
+
+## 🌟 Características
+
+- **Frontend**: JSF (JavaServer Faces) con PrimeFaces
+- **Backend**: Spring Boot con Spring Security y JWT
+- **Base de Datos**: PostgreSQL 13
+- **Administración de BD**: pgAdmin 4
+- **Containerización**: Docker y Docker Compose
+- **Seguridad**: Autenticación JWT y autorización basada en roles
+
+## 🗂️ Enlaces de la Aplicación:
+
+- **Inicio**: [http://localhost:8081/app/index.xhtml](http://localhost:8081/app/index.xhtml)
+- **Catálogo de Productos**: [http://localhost:8081/app/products.xhtml](http://localhost:8081/app/products.xhtml)
+- **Login**: [http://localhost:8081/app/login.xhtml](http://localhost:8081/app/login.xhtml)
+- **Panel de Administración**: [http://localhost:8081/app/admin.xhtml](http://localhost:8081/app/admin.xhtml)
+- **pgAdmin**: [http://localhost:5050](http://localhost:5050) (Email: admin@admin.com, Password: admin)
 
 ## Usage
 

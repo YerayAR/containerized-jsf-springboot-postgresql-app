@@ -2,18 +2,163 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
 <h:head>
-    <title>Login</title>
+    <title>Login - Product Management System</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .login-header p {
+            color: #666;
+            margin: 0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .credentials-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .credentials-info h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .credentials-info code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        
+        .nav-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .nav-links a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .messages {
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 5px;
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
 </h:head>
 <h:body>
-    <h:form id="loginForm">
-        <h:panelGrid columns="2">
-            <h:outputLabel value="Username" for="username"/>
-            <h:inputText id="username" value="#{loginBean.username}"/>
-            <h:outputLabel value="Password" for="password"/>
-            <h:inputSecret id="password" value="#{loginBean.password}"/>
-            <h:commandButton value="Login" action="#{loginBean.login}"/>
-        </h:panelGrid>
-        <h:messages/>
-    </h:form>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>🔐 Login</h1>
+            <p>Product Management System</p>
+        </div>
+        
+        <h:form id="loginForm">
+            <div class="form-group">
+                <h:outputLabel value="Username:" for="username"/>
+                <h:inputText id="username" value="#{loginBean.username}" required="true" placeholder="Enter username"/>
+            </div>
+            
+            <div class="form-group">
+                <h:outputLabel value="Password:" for="password"/>
+                <h:inputSecret id="password" value="#{loginBean.password}" required="true" placeholder="Enter password"/>
+            </div>
+            
+            <h:commandButton value="Login" action="#{loginBean.login}" styleClass="login-btn"/>
+            
+            <h:messages styleClass="messages"/>
+        </h:form>
+        
+        <div class="credentials-info">
+            <h3>Default Credentials</h3>
+            <p>Username: <code>admin</code></p>
+            <p>Password: <code>password</code></p>
+        </div>
+        
+        <div class="nav-links">
+            <a href="index.xhtml">🏠 Back to Home</a>
+            <a href="admin.xhtml">⚙️ Admin Panel</a>
+        </div>
+    </div>
 </h:body>
 </html>
