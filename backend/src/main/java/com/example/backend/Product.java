@@ -26,6 +26,18 @@ public class Product {
 
     private boolean active = true;
 
+    // Constructors
+    public Product() {}
+    
+    public Product(Long id, String name, String description, BigDecimal price, String category, boolean active) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.category = category;
+        this.active = active;
+    }
+
     // getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
