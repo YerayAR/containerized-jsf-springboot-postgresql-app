@@ -27,22 +27,38 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+        
+        // Skip JWT validation for public endpoints
+        String path = request.getRequestURI();
+        if (path.contains("/api/auth/login") || path.contains("/api/products")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        
         final String header = request.getHeader("Authorization");
         String token = null;
         String username = null;
 
         if (header != null && header.startsWith("Bearer ")) {
             token = header.substring(7);
-            username = jwtTokenUtil.getUsernameFromToken(token);
+            try {
+                username = jwtTokenUtil.getUsernameFromToken(token);
+            } catch (Exception e) {
+                // Invalid token, continue without authentication
+            }
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            if (jwtTokenUtil.validateToken(token)) {
-                var userDetails = userService.loadUserByUsername(username);
-                UsernamePasswordAuthenticationToken auth =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(auth);
+            try {
+                if (jwtTokenUtil.validateToken(token)) {
+                    var userDetails = userService.loadUserByUsername(username);
+                    UsernamePasswordAuthenticationToken auth =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                }
+            } catch (Exception e) {
+                // Token validation failed, continue without authentication
             }
         }
         filterChain.doFilter(request, response);

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Admin Panel - Product Management</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; }
+        .nav-bar { background-color: #007bff; padding: 10px; margin-bottom: 20px; border-radius: 4px; }
+        .nav-bar a { color: white; text-decoration: none; margin-right: 15px; }
+        .nav-bar a:hover { text-decoration: underline; }
+        
+        .form-section { background-color: #f8f9fa; padding: 20px; margin-bottom: 20px; border-radius: 4px; }
+        .form-section h2 { color: #495057; margin-top: 0; }
+        .form-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 10px; align-items: center; }
+        .form-grid label { font-weight: bold; }
+        .form-grid input, .form-grid textarea, .form-grid select { padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        .form-grid textarea { resize: vertical; min-height: 60px; }
+        
+        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px; text-decoration: none; display: inline-block; }
+        .btn-primary { background-color: #007bff; color: white; }
+        .btn-success { background-color: #28a745; color: white; }
+        .btn-warning { background-color: #ffc107; color: black; }
+        .btn-danger { background-color: #dc3545; color: white; }
+        .btn:hover { opacity: 0.9; }
+        
+        .message { padding: 10px; margin: 10px 0; border-radius: 4px; }
+        .message.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .message.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f8f9fa; font-weight: bold; }
+        tr:hover { background-color: #f5f5f5; }
+        
+        .price { text-align: right; font-weight: bold; color: #28a745; }
+        .category { background-color: #e7f3ff; border-radius: 4px; padding: 4px 8px; }
+        .status { font-weight: bold; }
+        .status.active { color: #28a745; }
+        .status.inactive { color: #dc3545; }
+        
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
+        .modal-content { background-color: white; margin: 15% auto; padding: 20px; border-radius: 8px; width: 80%; max-width: 500px; }
+        .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close:hover { color: black; }
+    </style>
+</h:head>
+<h:body>
+    <div class="container">
+        <div class="nav-bar">
+            <a href="index.xhtml">🏠 Home</a>
+            <a href="products.xhtml">📦 Products</a>
+            <a href="admin.xhtml">⚙️ Admin Panel</a>
+            <a href="login.xhtml">🔐 Login</a>
+        </div>
+        
+        <h1>📊 Product Management Admin Panel</h1>
+        
+        <!-- Message Display -->
+        <h:panelGroup rendered="#{not empty adminBean.message}">
+            <div class="message success">
+                #{adminBean.message}
+            </div>
+        </h:panelGroup>
+        
+        <!-- Create New Product Form -->
+        <div class="form-section">
+            <h2>➕ Create New Product</h2>
+            <h:form id="createForm">
+                <div class="form-grid">
+                    <h:outputLabel value="Name:" for="newName"/>
+                    <h:inputText id="newName" value="#{adminBean.newProduct.name}" required="true"/>
+                    
+                    <h:outputLabel value="Description:" for="newDescription"/>
+                    <h:inputTextarea id="newDescription" value="#{adminBean.newProduct.description}" rows="3"/>
+                    
+                    <h:outputLabel value="Price:" for="newPrice"/>
+                    <h:inputText id="newPrice" value="#{adminBean.newProduct.price}" required="true">
+                        <f:convertNumber type="currency"/>
+                    </h:inputText>
+                    
+                    <h:outputLabel value="Category:" for="newCategory"/>
+                    <h:selectOneMenu id="newCategory" value="#{adminBean.newProduct.category}">
+                        <f:selectItem itemValue="" itemLabel="Select Category"/>
+                        <f:selectItem itemValue="Electronics" itemLabel="Electronics"/>
+                        <f:selectItem itemValue="Books" itemLabel="Books"/>
+                        <f:selectItem itemValue="Clothing" itemLabel="Clothing"/>
+                        <f:selectItem itemValue="Food" itemLabel="Food"/>
+                        <f:selectItem itemValue="Furniture" itemLabel="Furniture"/>
+                        <f:selectItem itemValue="Sports" itemLabel="Sports"/>
+                        <f:selectItem itemValue="Beauty" itemLabel="Beauty"/>
+                        <f:selectItem itemValue="Automotive" itemLabel="Automotive"/>
+                    </h:selectOneMenu>
+                    
+                    <h:outputLabel value="Active:" for="newActive"/>
+                    <h:selectBooleanCheckbox id="newActive" value="#{adminBean.newProduct.active}"/>
+                </div>
+                <div style="margin-top: 15px;">
+                    <h:commandButton value="Create Product" action="#{adminBean.createProduct}" class="btn btn-success"/>
+                </div>
+            </h:form>
+        </div>
+        
+        <!-- Edit Product Form -->
+        <div class="form-section">
+            <h2>✏️ Edit Selected Product</h2>
+            <h:form id="editForm">
+                <div class="form-grid">
+                    <h:outputLabel value="ID:" for="editId"/>
+                    <h:inputText id="editId" value="#{adminBean.selectedProduct.id}" readonly="true"/>
+                    
+                    <h:outputLabel value="Name:" for="editName"/>
+                    <h:inputText id="editName" value="#{adminBean.selectedProduct.name}" required="true"/>
+                    
+                    <h:outputLabel value="Description:" for="editDescription"/>
+                    <h:inputTextarea id="editDescription" value="#{adminBean.selectedProduct.description}" rows="3"/>
+                    
+                    <h:outputLabel value="Price:" for="editPrice"/>
+                    <h:inputText id="editPrice" value="#{adminBean.selectedProduct.price}" required="true">
+                        <f:convertNumber type="currency"/>
+                    </h:inputText>
+                    
+                    <h:outputLabel value="Category:" for="editCategory"/>
+                    <h:selectOneMenu id="editCategory" value="#{adminBean.selectedProduct.category}">
+                        <f:selectItem itemValue="" itemLabel="Select Category"/>
+                        <f:selectItem itemValue="Electronics" itemLabel="Electronics"/>
+                        <f:selectItem itemValue="Books" itemLabel="Books"/>
+                        <f:selectItem itemValue="Clothing" itemLabel="Clothing"/>
+                        <f:selectItem itemValue="Food" itemLabel="Food"/>
+                        <f:selectItem itemValue="Furniture" itemLabel="Furniture"/>
+                        <f:selectItem itemValue="Sports" itemLabel="Sports"/>
+                        <f:selectItem itemValue="Beauty" itemLabel="Beauty"/>
+                        <f:selectItem itemValue="Automotive" itemLabel="Automotive"/>
+                    </h:selectOneMenu>
+                    
+                    <h:outputLabel value="Active:" for="editActive"/>
+                    <h:selectBooleanCheckbox id="editActive" value="#{adminBean.selectedProduct.active}"/>
+                </div>
+                <div style="margin-top: 15px;">
+                    <h:commandButton value="Update Product" action="#{adminBean.updateProduct}" class="btn btn-primary"
+                                     rendered="#{adminBean.selectedProduct.id != null}"/>
+                    <h:commandButton value="Clear Selection" action="#{adminBean.clearSelection}" class="btn btn-warning"
+                                     rendered="#{adminBean.selectedProduct.id != null}"/>
+                </div>
+            </h:form>
+        </div>
+        
+        <!-- Products Table -->
+        <h2>📋 All Products</h2>
+        <h:form id="productsForm">
+            <h:commandButton value="🔄 Refresh" action="#{adminBean.loadProducts}" class="btn btn-primary"/>
+            
+            <h:dataTable value="#{adminBean.products}" var="product" styleClass="products-table" 
+                         rendered="#{not empty adminBean.products}">
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                    #{product.id}
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Name</f:facet>
+                    <strong>#{product.name}</strong>
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Description</f:facet>
+                    <div style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
+                        #{product.description}
+                    </div>
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Price</f:facet>
+                    <span class="price">
+                        <h:outputText value="#{product.price}">
+                            <f:convertNumber type="currency"/>
+                        </h:outputText>
+                    </span>
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Category</f:facet>
+                    <span class="category">#{product.category}</span>
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Status</f:facet>
+                    <span class="status #{product.active ? 'active' : 'inactive'}">
+                        #{product.active ? '✅ Active' : '❌ Inactive'}
+                    </span>
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Actions</f:facet>
+                    <h:commandButton value="✏️ Edit" action="#{adminBean.selectProduct(product)}" class="btn btn-warning"/>
+                    <h:commandButton value="🗑️ Delete" action="#{adminBean.deleteProduct(product.id)}" class="btn btn-danger"
+                                     onclick="return confirm('Are you sure you want to delete this product?')"/>
+                </h:column>
+            </h:dataTable>
+            
+            <h:panelGroup rendered="#{empty adminBean.products}">
+                <p style="color: red; font-weight: bold; text-align: center;">
+                    ⚠️ No products found. Check backend connection or login status.
+                </p>
+            </h:panelGroup>
+        </h:form>
+        
+        <div style="margin-top: 30px; text-align: center; color: #666;">
+            <p>🔐 Admin access required for product management operations</p>
+            <p>Default credentials: admin / password</p>
+        </div>
+    </div>
+</h:body>
+</html>

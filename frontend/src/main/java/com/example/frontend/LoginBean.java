@@ -22,17 +22,32 @@ public class LoginBean implements Serializable {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
             conn.setDoOutput(true);
+            
             String body = String.format("{\"username\":\"%s\",\"password\":\"%s\"}", username, password);
-            conn.getOutputStream().write(body.getBytes());
+            conn.getOutputStream().write(body.getBytes("UTF-8"));
 
-            if (conn.getResponseCode() == 200) {
+            int responseCode = conn.getResponseCode();
+            System.out.println("Login response code: " + responseCode);
+            
+            if (responseCode == 200) {
                 ObjectMapper mapper = new ObjectMapper();
                 var node = mapper.readTree(new InputStreamReader(conn.getInputStream()));
                 token = node.get("token").asText();
-                return "/index.xhtml?faces-redirect=true";
+                System.out.println("Login successful, token received");
+                return "/admin.xhtml?faces-redirect=true";
+            } else {
+                System.out.println("Login failed with response code: " + responseCode);
+                // Read error response
+                if (conn.getErrorStream() != null) {
+                    var errorReader = new InputStreamReader(conn.getErrorStream());
+                    var errorResponse = new java.util.Scanner(errorReader).useDelimiter("\\A").next();
+                    System.out.println("Error response: " + errorResponse);
+                }
             }
         } catch (Exception e) {
+            System.out.println("Exception during login: " + e.getMessage());
             e.printStackTrace();
         }
         return null;
