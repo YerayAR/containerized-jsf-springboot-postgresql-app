@@ -38,6 +38,8 @@ The database is pre-populated with 8 sample products across different categories
 - Food (Premium Coffee)
 - Clothing (Cotton T-shirt)
 
+Default admin credentials are `admin` / `password`. Authenticate via `POST /api/auth/login` to obtain a JWT.
+
 You can access the sample data through:
 - **API**: `GET http://localhost:8080/api/products`
 - **Individual product**: `GET http://localhost:8080/api/products/{id}`
@@ -51,6 +53,7 @@ The JSF frontend now includes:
 - **Styled Interface**: Clean, modern styling with alternating row colors and category badges
 - **Real-time Data**: Fetches live data from the Spring Boot backend on each page load
 - **Error Handling**: Shows appropriate messages if backend is unavailable
+- **Login Page**: Authenticate with the backend to manage products
 
 ## Development
 

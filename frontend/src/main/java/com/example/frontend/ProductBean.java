@@ -2,6 +2,7 @@ package com.example.frontend;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,6 +17,9 @@ import java.util.List;
 @RequestScoped
 public class ProductBean {
     private List<Product> products;
+
+    @Inject
+    private LoginBean loginBean;
 
     @PostConstruct
     public void init() {
@@ -33,6 +37,9 @@ public class ProductBean {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
+            if (loginBean != null && loginBean.getToken() != null) {
+                conn.setRequestProperty("Authorization", "Bearer " + loginBean.getToken());
+            }
 
             if (conn.getResponseCode() == 200) {
                 ObjectMapper mapper = new ObjectMapper();
