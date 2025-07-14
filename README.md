@@ -51,3 +51,12 @@ The JSF frontend now includes:
 - **Styled Interface**: Clean, modern styling with alternating row colors and category badges
 - **Real-time Data**: Fetches live data from the Spring Boot backend on each page load
 - **Error Handling**: Shows appropriate messages if backend is unavailable
+
+## Development
+
+Sample data is loaded automatically on startup via a Spring `CommandLineRunner`.
+Run tests with Maven:
+
+```bash
+mvn -f backend/pom.xml test
+```

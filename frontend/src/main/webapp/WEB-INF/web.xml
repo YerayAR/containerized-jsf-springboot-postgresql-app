@@ -20,4 +20,8 @@
     <welcome-file-list>
         <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/error.xhtml</location>
+    </error-page>
 </web-app>
