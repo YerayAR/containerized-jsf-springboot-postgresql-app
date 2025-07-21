@@ -3,8 +3,12 @@ package com.example.backend;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
 
 @Entity
+@DynamicUpdate
+@SelectBeforeUpdate
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,9 +1,13 @@
 package com.example.backend;
 
 import javax.persistence.*;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
 
 @Entity
 @Table(name = "users")
+@DynamicUpdate
+@SelectBeforeUpdate
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
