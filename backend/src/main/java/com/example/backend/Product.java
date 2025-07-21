@@ -1,17 +1,26 @@
 package com.example.backend;
 
+// JPA standard annotations with Hibernate enhancements
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
+
+// Hibernate-specific optimizations
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SelectBeforeUpdate;
 
+// Swagger documentation imports
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @Entity
+@Table(name = "products")
 @DynamicUpdate
 @SelectBeforeUpdate
+@Schema(description = "Product entity with Hibernate optimizations")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Unique identifier of the product", example = "1")
     private Long id;
 
     @NotBlank
