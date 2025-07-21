@@ -1,22 +1,32 @@
 # 🚀 Containerized JSF + Spring Boot + PostgreSQL Application
 
-Una aplicación web full-stack que demuestra un frontend JSF con backend Spring Boot y base de datos PostgreSQL, todo containerizado con Docker.
+Una aplicación web full-stack que demuestra un frontend JSF con backend Spring Boot y base de datos PostgreSQL, todo containerizado con Docker. **Migrada completamente a Hibernate nativo con documentación API Swagger integrada.**
 
 ## 🌟 Características
 
-- **Frontend**: JSF (JavaServer Faces) con PrimeFaces
-- **Backend**: Spring Boot con Spring Security y JWT
-- **Base de Datos**: PostgreSQL 13
+- **Frontend**: JSF (JavaServer Faces) con interfaz moderna y responsive
+- **Backend**: Spring Boot con **Hibernate nativo** (migrado de JPA genérico)
+- **Base de Datos**: PostgreSQL 13 con optimizaciones de rendimiento
 - **Administración de BD**: pgAdmin 4
+- **API Documentation**: **Swagger UI completo** con testing interactivo
+- **Seguridad**: Autenticación JWT integrada con Swagger
 - **Containerización**: Docker y Docker Compose
-- **Seguridad**: Autenticación JWT y autorización basada en roles
+- **Optimizaciones**: Dynamic Updates, Batch Processing, SQL Comments
 
-## 🗂️ Enlaces de la Aplicación:
+## 🔗 Enlaces de la Aplicación
 
+### 📱 **Frontend JSF**
 - **Inicio**: [http://localhost:8081/app/index.xhtml](http://localhost:8081/app/index.xhtml)
 - **Catálogo de Productos**: [http://localhost:8081/app/products.xhtml](http://localhost:8081/app/products.xhtml)
 - **Login**: [http://localhost:8081/app/login.xhtml](http://localhost:8081/app/login.xhtml)
 - **Panel de Administración**: [http://localhost:8081/app/admin.xhtml](http://localhost:8081/app/admin.xhtml)
+
+### 🛠️ **API REST & Documentación**
+- **🎯 Swagger UI**: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) - **Documentación interactiva completa**
+- **📋 OpenAPI JSON**: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs) - Especificación API
+- **🔌 API Endpoints**: [http://localhost:8080/api/products](http://localhost:8080/api/products) - REST API
+
+### 🗄️ **Administración de Base de Datos**
 - **pgAdmin**: [http://localhost:5050](http://localhost:5050) (Email: admin@admin.com, Password: admin)
 
 ## Usage
