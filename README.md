@@ -1,6 +1,6 @@
 # 🚀 Containerized JSF + Spring Boot + PostgreSQL Application
 
-Una aplicación web full-stack que demuestra un frontend JSF con backend Spring Boot y base de datos PostgreSQL, todo containerizado con Docker. **Migrada completamente a Hibernate nativo con documentación API Swagger integrada.**
+Una aplicación web full-stack que demuestra un frontend JSF con backend Spring Boot y base de datos PostgreSQL, implementado con Docker. **Migrada completamente a Hibernate nativo con documentación API Swagger integrada.**
 
 ## 🌟 Características
 
