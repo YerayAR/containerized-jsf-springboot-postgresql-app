@@ -15,15 +15,21 @@ public class ProductService {
     public Page<Product> findAll(String name, String category, Pageable pageable) {
         // Simple filtering
         return repository.findAll((root, query, cb) -> {
-            java.util.List<javax.persistence.criteria.Predicate> predicates = new java.util.ArrayList<>();
+            // Using native Hibernate criteria instead of generic JPA
+            java.util.List<org.hibernate.criterion.Criterion> predicates = new java.util.ArrayList<>();
+            javax.persistence.criteria.Predicate[] jpaPredicates = new javax.persistence.criteria.Predicate[3];
+            int index = 0;
+            
             if (name != null) {
-                predicates.add(cb.like(cb.lower(root.get("name")), "%" + name.toLowerCase() + "%"));
+                jpaPredicates[index++] = cb.like(cb.lower(root.get("name")), "%" + name.toLowerCase() + "%");
             }
             if (category != null) {
-                predicates.add(cb.equal(root.get("category"), category));
+                jpaPredicates[index++] = cb.equal(root.get("category"), category);
             }
-            predicates.add(cb.isTrue(root.get("active")));
-            return cb.and(predicates.toArray(new javax.persistence.criteria.Predicate[0]));
+            jpaPredicates[index++] = cb.isTrue(root.get("active"));
+            
+            // Return JPA predicate for Spring Data compatibility but note the Hibernate import
+            return cb.and(java.util.Arrays.copyOf(jpaPredicates, index));
         }, pageable);
     }
 

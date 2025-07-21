@@ -1,19 +1,28 @@
 package com.example.backend;
 
+// JPA standard annotations with Hibernate enhancements
 import javax.persistence.*;
+
+// Hibernate-specific optimizations
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SelectBeforeUpdate;
+
+// Swagger documentation imports
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
 @Table(name = "users")
 @DynamicUpdate
 @SelectBeforeUpdate
+@Schema(description = "User entity for authentication")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Unique identifier of the user", example = "1")
     private Long id;
 
     @Column(unique = true)
+    @Schema(description = "Username for authentication", example = "admin")
     private String username;
 
     private String password;
