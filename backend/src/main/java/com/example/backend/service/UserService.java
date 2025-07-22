@@ -1,9 +1,11 @@
-package com.example.backend;
+package com.example.backend.service;
+
+import com.example.backend.model.User;
+import com.example.backend.repository.UserRepository;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,7 +20,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return repository.findByUsername(username)
-                .map(u -> User.withUsername(u.getUsername())
+                .map(u -> org.springframework.security.core.userdetails.User.withUsername(u.getUsername())
                         .password(u.getPassword())
                         .roles(u.getRole())
                         .build())

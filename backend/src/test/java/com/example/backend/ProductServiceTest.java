@@ -1,5 +1,9 @@
 package com.example.backend;
 
+import com.example.backend.model.Product;
+import com.example.backend.repository.ProductRepository;
+import com.example.backend.service.ProductService;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

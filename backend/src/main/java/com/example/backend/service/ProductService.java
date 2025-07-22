@@ -1,4 +1,8 @@
-package com.example.backend;
+package com.example.backend.service;
+
+import com.example.backend.model.Product;
+import com.example.backend.repository.ProductRepository;
+import com.example.backend.exception.ResourceNotFoundException;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

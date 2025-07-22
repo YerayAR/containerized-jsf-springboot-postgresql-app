@@ -1,4 +1,7 @@
-package com.example.backend;
+package com.example.backend.config;
+
+import com.example.backend.security.JwtAuthenticationFilter;
+import com.example.backend.service.UserService;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
