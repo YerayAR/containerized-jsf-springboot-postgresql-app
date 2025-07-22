@@ -32,11 +32,21 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                // Temporarily allow ALL requests for Swagger debugging
-                .anyRequest().permitAll();
+                    // Public endpoints
+                    .antMatchers("/api/auth/login").permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/products", "/api/products/**").permitAll()
+                    // Swagger UI and API documentation
+                    .antMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
+                    // Admin only endpoints
+                    .antMatchers(HttpMethod.POST, "/api/products").hasRole("ADMIN")
+                    .antMatchers(HttpMethod.PUT, "/api/products/**").hasRole("ADMIN")
+                    .antMatchers(HttpMethod.PATCH, "/api/products/**").hasRole("ADMIN")
+                    .antMatchers(HttpMethod.DELETE, "/api/products/**").hasRole("ADMIN")
+                    // All other requests need authentication
+                    .anyRequest().authenticated();
 
-        // Comment out JWT filter temporarily for debugging
-        // http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        // Enable JWT filter
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
