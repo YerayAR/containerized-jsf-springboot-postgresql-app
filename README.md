@@ -1,92 +1,102 @@
-# 🚀 Containerized JSF + Spring Boot + PostgreSQL Application
+# 🚀 Aplicación Contenerizada con JSF, Spring Boot y PostgreSQL
 
-Una aplicación web full-stack que demuestra un frontend JSF con backend Spring Boot y base de datos PostgreSQL, implementado con Docker. **Migrada completamente a Hibernate nativo con documentación API Swagger integrada.**
+Esta es una aplicación web full-stack que demuestra la integración de un frontend con **JavaServer Faces (JSF)**, un backend con **Spring Boot** y una base de datos **PostgreSQL**. Todo el entorno está orquestado y desplegado utilizando **Docker** y **Docker Compose**.
 
-## 🌟 Características
+El código ha sido **completamente documentado** para facilitar su comprensión, mantenimiento y extensibilidad.
 
-- **Frontend**: JSF (JavaServer Faces) con interfaz moderna y responsive
-- **Backend**: Spring Boot con **Hibernate nativo** (migrado de JPA genérico)
-- **Base de Datos**: PostgreSQL 13 con optimizaciones de rendimiento
-- **Administración de BD**: pgAdmin 4
-- **API Documentation**: **Swagger UI completo** con testing interactivo
-- **Seguridad**: Autenticación JWT integrada con Swagger
-- **Containerización**: Docker y Docker Compose
-- **Optimizaciones**: Dynamic Updates, Batch Processing, SQL Comments
+## 🌟 Arquitectura y Tecnologías
 
-## 🔗 Enlaces de la Aplicación
+La aplicación se divide en tres servicios principales que se ejecutan en contenedores Docker independientes:
 
-### 📱 **Frontend JSF**
-- **Inicio**: [http://localhost:8081/app/index.xhtml](http://localhost:8081/app/index.xhtml)
-- **Catálogo de Productos**: [http://localhost:8081/app/products.xhtml](http://localhost:8081/app/products.xhtml)
-- **Login**: [http://localhost:8081/app/login.xhtml](http://localhost:8081/app/login.xhtml)
-- **Panel de Administración**: [http://localhost:8081/app/admin.xhtml](http://localhost:8081/app/admin.xhtml)
+-   **`frontend`**: Una aplicación web Java que utiliza **JavaServer Faces (JSF)** para la interfaz de usuario. Se ejecuta sobre un servidor **Apache Tomcat**.
+    -   **JSF**: Framework basado en componentes para construir UIs del lado del servidor.
+    -   **CDI (Weld)**: Para la inyección de dependencias en los Managed Beans de JSF.
+    -   **Cliente HTTP**: Se comunica con el backend a través de su API REST para obtener y mostrar los datos.
 
-### 🛠️ **API REST & Documentación**
-- **🎯 Swagger UI**: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) - **Documentación interactiva completa**
-- **📋 OpenAPI JSON**: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs) - Especificación API
-- **🔌 API Endpoints**: [http://localhost:8080/api/products](http://localhost:8080/api/products) - REST API
+-   **`backend`**: Una aplicación **Spring Boot** que expone una **API RESTful** para gestionar los productos.
+    -   **Spring Web**: Para crear los endpoints REST.
+    -   **Spring Data JPA & Hibernate**: Para la persistencia de datos y la comunicación con la base de datos. Se utilizan optimizaciones de Hibernate como `@DynamicUpdate`.
+    -   **Spring Security**: Para la autenticación y autorización basadas en **JWT (JSON Web Tokens)**.
+    -   **PostgreSQL Driver**: Para la conexión a la base de datos.
+    -   **Swagger/OpenAPI**: Para la documentación interactiva de la API.
 
-### 🗄️ **Administración de Base de Datos**
-- **pgAdmin**: [http://localhost:5050](http://localhost:5050) (Email: admin@admin.com, Password: admin)
+-   **`db`**: Una base de datos **PostgreSQL** donde se almacenan los datos de la aplicación.
 
-## Usage
+-   **`pgadmin`**: Una herramienta de administración web para la base de datos PostgreSQL.
+
+## ✨ Características Clave
+
+-   **Frontend Moderno**: Interfaz de usuario construida con JSF, que permite vistas tanto en formato de tarjetas (grid) como de tabla.
+-   **Backend Robusto**: API REST segura y bien documentada con Spring Boot.
+-   **Seguridad Integrada**: Autenticación basada en JWT para proteger los endpoints del backend.
+-   **Documentación de API**: **Swagger UI** integrado para explorar y probar la API de forma interactiva.
+-   **Base de Datos Relacional**: PostgreSQL para un almacenamiento de datos fiable.
+-   **Contenerización Completa**: Todo el stack se despliega con un solo comando gracias a Docker Compose.
+-   **Código Documentado**: Cada clase, método y configuración importante está comentado para una fácil comprensión.
+
+## 🚀 Cómo Empezar
+
+### Prerrequisitos
+
+-   **Docker** instalado.
+-   **Docker Compose** instalado.
+
+### Ejecución
+
+1.  Clona este repositorio en tu máquina local.
+2.  Abre una terminal en el directorio raíz del proyecto.
+3.  Ejecuta el siguiente comando para construir las imágenes y levantar los contenedores:
+
+    ```bash
+    docker-compose up --build
+    ```
+
+    El flag `--build` asegura que las imágenes de Docker se construyan desde cero, aplicando cualquier cambio en el código o en los `Dockerfile`.
+
+## 🔗 Enlaces Útiles
+
+Una vez que la aplicación esté en funcionamiento, puedes acceder a los siguientes servicios:
+
+### 📱 **Frontend (JSF)**
+
+-   **Página Principal**: [http://localhost:8081/app/index.xhtml](http://localhost:8081/app/index.xhtml)
+-   **Catálogo de Productos**: [http://localhost:8081/app/products.xhtml](http://localhost:8081/app/products.xhtml)
+-   **Página de Login**: [http://localhost:8081/app/login.xhtml](http://localhost:8081/app/login.xhtml)
+
+### 🛠️ **Backend (API REST & Documentación)**
+
+-   **Swagger UI (Documentación Interactiva)**: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+-   **Endpoint Principal de Productos**: [http://localhost:8080/api/products](http://localhost:8080/api/products)
+
+### 🗄️ **Base de Datos**
+
+-   **pgAdmin (Administración de BD)**: [http://localhost:5050](http://localhost:5050)
+    -   **Email**: `admin@admin.com`
+    -   **Contraseña**: `admin`
+
+## 🔐 Autenticación
+
+Para acceder a los endpoints protegidos de la API (como crear o eliminar productos), necesitas un token JWT.
+
+1.  Ve a la sección `Auth` en **Swagger UI**.
+2.  Utiliza el endpoint `POST /api/auth/login`.
+3.  Proporciona las siguientes credenciales en el cuerpo de la solicitud:
+    ```json
+    {
+      "username": "admin",
+      "password": "password"
+    }
+    ```
+4.  Copia el `token` de la respuesta.
+5.  Haz clic en el botón **"Authorize"** en la parte superior derecha de Swagger UI e introduce el token en el formato `Bearer <tu-token>`.
+
+Ahora podrás ejecutar las operaciones que requieren autenticación.
+
+## 🧪 Pruebas
+
+Para ejecutar las pruebas unitarias y de integración del backend, puedes usar Maven:
 
 ```bash
-docker-compose up --build
-```
-
-- Frontend: <http://localhost:8081/app/>
-- API REST: <http://localhost:8080/api/products>
-
-## Build Notes
-
-During the initial setup, the following fixes were applied:
-
-1. **Frontend Dockerfile**: Corrected to reference the correct WAR file name (`frontend-1.0.0.war` instead of `frontend.war`) that is generated by the Maven build process.
-
-2. **JSF Dependencies**: Added JSF implementation dependencies to the frontend `pom.xml` since Tomcat doesn't include JSF by default:
-   - `com.sun.faces:jsf-api` and `com.sun.faces:jsf-impl` for JSF implementation
-   - `org.jboss.weld.servlet:weld-servlet` for CDI support
-
-These changes ensure that both the frontend container builds successfully and the JSF application works properly in Tomcat.
-
-## Services
-
-- **Database**: PostgreSQL 13 running on port 5432
-- **Backend**: Spring Boot application with REST API on port 8080
-- **Frontend**: JSF application deployed on Tomcat 9 on port 8081
-
-## Sample Data
-
-The database is pre-populated with 8 sample products across different categories:
-- Electronics (Laptop, Smartphone, Headphones, Monitor)
-- Books (Spring Boot Guide)
-- Furniture (Office Desk)
-- Food (Premium Coffee)
-- Clothing (Cotton T-shirt)
-
-Default admin credentials are `admin` / `password`. Authenticate via `POST /api/auth/login` to obtain a JWT.
-
-You can access the sample data through:
-- **API**: `GET http://localhost:8080/api/products`
-- **Individual product**: `GET http://localhost:8080/api/products/{id}`
-- **JSF Frontend**: http://localhost:8081/app/ (displays products in a formatted table)
-
-## Frontend Features
-
-The JSF frontend now includes:
-- **Product List Display**: Shows all products from the backend API in a responsive table
-- **Product Details**: Displays ID, name, description, price, category, and status
-- **Styled Interface**: Clean, modern styling with alternating row colors and category badges
-- **Real-time Data**: Fetches live data from the Spring Boot backend on each page load
-- **Error Handling**: Shows appropriate messages if backend is unavailable
-- **Login Page**: Authenticate with the backend to manage products
-
-## Development
-
-Sample data is loaded automatically on startup via a Spring `CommandLineRunner`.
-Run tests with Maven:
-
-```bash
+# Navega al directorio del backend y ejecuta los tests
 mvn -f backend/pom.xml test
 ```
