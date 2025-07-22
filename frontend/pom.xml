@@ -1,23 +1,41 @@
+<!--
+Archivo de configuración de Maven (POM) para el frontend de la aplicación.
+Este proyecto es una aplicación web (WAR) que utiliza JavaServer Faces (JSF) y CDI.
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <!-- Coordenadas del proyecto -->
     <groupId>com.example</groupId>
     <artifactId>frontend</artifactId>
     <version>1.0.0</version>
-    <packaging>war</packaging>
+    <packaging>war</packaging> <!-- El empaquetado es 'war' para aplicaciones web -->
     <name>frontend</name>
+
+    <!-- Propiedades del proyecto -->
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source> <!-- Versión de código fuente de Java -->
+        <maven.compiler.target>11</maven.compiler.target> <!-- Versión de bytecode de Java -->
     </properties>
+
+    <!-- Dependencias del proyecto -->
     <dependencies>
+        <!--
+        API de Java EE 8.
+        El 'scope' es 'provided' porque el servidor de aplicaciones (como Payara, WildFly) ya proporciona estas bibliotecas.
+        -->
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <version>8.0</version>
             <scope>provided</scope>
         </dependency>
-        <!-- JSF Implementation -->
+
+        <!--
+        Implementación de JavaServer Faces (JSF).
+        JSF es un framework para construir interfaces de usuario basadas en componentes para aplicaciones web.
+        -->
         <dependency>
             <groupId>com.sun.faces</groupId>
             <artifactId>jsf-api</artifactId>
@@ -28,12 +46,21 @@
             <artifactId>jsf-impl</artifactId>
             <version>2.2.20</version>
         </dependency>
-        <!-- CDI Implementation -->
+
+        <!--
+        Implementación de CDI (Contexts and Dependency Injection).
+        Weld es la implementación de referencia de CDI, utilizada para la inyección de dependencias.
+        -->
         <dependency>
             <groupId>org.jboss.weld.servlet</groupId>
             <artifactId>weld-servlet</artifactId>
             <version>2.4.8.Final</version>
         </dependency>
+
+        <!--
+        Librería Jackson para el procesamiento de JSON.
+        Esencial para la comunicación con el backend REST, para serializar y deserializar objetos Java a/desde JSON.
+        -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
