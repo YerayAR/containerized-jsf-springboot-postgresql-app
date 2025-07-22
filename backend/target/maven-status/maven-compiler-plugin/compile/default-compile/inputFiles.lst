@@ -1,3 +1,4 @@
+C:\Users\yera2\Dev\containerized-jsf-springboot-postgresql-app\backend\src\main\java\com\example\backend\dto\ProductRequestDto.java
 C:\Users\yera2\Dev\containerized-jsf-springboot-postgresql-app\backend\src\main\java\com\example\backend\config\SwaggerConfig.java
 C:\Users\yera2\Dev\containerized-jsf-springboot-postgresql-app\backend\src\main\java\com\example\backend\repository\ProductHibernateDao.java
 C:\Users\yera2\Dev\containerized-jsf-springboot-postgresql-app\backend\src\main\java\com\example\backend\security\JwtAuthenticationFilter.java
@@ -6,6 +7,7 @@ C:\Users\yera2\Dev\containerized-jsf-springboot-postgresql-app\backend\src\main\
 C:\Users\yera2\Dev\containerized-jsf-springboot-postgresql-app\backend\src\main\java\com\example\backend\util\DataLoader.java
 C:\Users\yera2\Dev\containerized-jsf-springboot-postgresql-app\backend\src\main\java\com\example\backend\repository\UserRepository.java
 C:\Users\yera2\Dev\containerized-jsf-springboot-postgresql-app\backend\src\main\java\com\example\backend\config\SecurityConfig.java
+C:\Users\yera2\Dev\containerized-jsf-springboot-postgresql-app\backend\src\main\java\com\example\backend\dto\ProductResponseDto.java
 C:\Users\yera2\Dev\containerized-jsf-springboot-postgresql-app\backend\src\main\java\com\example\backend\service\ProductService.java
 C:\Users\yera2\Dev\containerized-jsf-springboot-postgresql-app\backend\src\main\java\com\example\backend\config\WebConfig.java
 C:\Users\yera2\Dev\containerized-jsf-springboot-postgresql-app\backend\src\main\java\com\example\backend\security\JwtTokenUtil.java
@@ -13,6 +15,7 @@ C:\Users\yera2\Dev\containerized-jsf-springboot-postgresql-app\backend\src\main\
 C:\Users\yera2\Dev\containerized-jsf-springboot-postgresql-app\backend\src\main\java\com\example\backend\exception\ResourceNotFoundException.java
 C:\Users\yera2\Dev\containerized-jsf-springboot-postgresql-app\backend\src\main\java\com\example\backend\model\User.java
 C:\Users\yera2\Dev\containerized-jsf-springboot-postgresql-app\backend\src\main\java\com\example\backend\model\Product.java
+C:\Users\yera2\Dev\containerized-jsf-springboot-postgresql-app\backend\src\main\java\com\example\backend\exception\GlobalExceptionHandler.java
 C:\Users\yera2\Dev\containerized-jsf-springboot-postgresql-app\backend\src\main\java\com\example\backend\BackendApplication.java
 C:\Users\yera2\Dev\containerized-jsf-springboot-postgresql-app\backend\src\main\java\com\example\backend\controller\ProductController.java
 C:\Users\yera2\Dev\containerized-jsf-springboot-postgresql-app\backend\src\main\java\com\example\backend\config\HibernateConfig.java
