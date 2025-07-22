@@ -42,7 +42,7 @@ La aplicación tiene como objetivo permitir la gestión de productos en una tien
 
 ```text
 +-------------+     REST API     +--------------+     +-------------+
-|  Frontend   | <--------------> |  Spring Boot | <--> | PostgreSQL  |
+|  Frontend   | <--------------> |  Spring Boot | <-->| PostgreSQL  |
 |   JSF       |                  |   Backend    |     |  Database   |
 +-------------+                  +--------------+     +-------------+
       |                                                       ^
