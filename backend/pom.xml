@@ -1,30 +1,52 @@
+<!--
+Archivo de configuración de Maven (POM) para el backend de la aplicación.
+Este archivo define la estructura del proyecto, las dependencias, los plugins y otras configuraciones necesarias para construir y gestionar el proyecto.
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!-- Versión del modelo de POM -->
     <modelVersion>4.0.0</modelVersion>
+    <!-- Coordenadas del proyecto -->
     <groupId>com.example</groupId>
     <artifactId>backend</artifactId>
     <version>1.0.0</version>
-    <packaging>jar</packaging>
+    <packaging>jar</packaging> <!-- El proyecto se empaqueta como un archivo JAR -->
     <name>backend</name>
+
+    <!--
+    Define el proyecto padre, que en este caso es spring-boot-starter-parent.
+    Esto proporciona una gestión de dependencias y configuraciones por defecto para una aplicación Spring Boot.
+    -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.6.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/> <!-- Busca el padre en el repositorio de Maven -->
     </parent>
+
+    <!-- Propiedades del proyecto -->
     <properties>
-        <java.version>11</java.version>
+        <java.version>11</java.version> <!-- Versión de Java utilizada en el proyecto -->
     </properties>
+
+    <!--
+    Sección de dependencias.
+    Aquí se declaran todas las librerías y frameworks que el proyecto necesita.
+    -->
     <dependencies>
+        <!-- Dependencia para construir aplicaciones web con Spring MVC -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!-- Hibernate specific dependencies instead of generic JPA -->
+
+        <!--
+        Dependencia para la persistencia de datos con Spring Data JPA.
+        Se excluye la API de persistencia de Jakarta para forzar el uso de Hibernate de forma nativa.
+        -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <!-- Exclude generic JPA to force Hibernate usage -->
             <exclusions>
                 <exclusion>
                     <groupId>jakarta.persistence</groupId>
@@ -32,7 +54,8 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- Direct Hibernate dependencies for native API usage -->
+
+        <!-- Dependencias directas de Hibernate para usar su API nativa -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -41,20 +64,27 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
         </dependency>
+
+        <!-- Driver de la base de datos PostgreSQL -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.2.24</version>
         </dependency>
+
+        <!-- Dependencia para la validación de datos (ej. en DTOs) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
+
+        <!-- Dependencia para la serialización y deserialización de JSON (usada por Spring Web) -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
-        <!-- Swagger/OpenAPI documentation dependencies -->
+
+        <!-- Dependencias para la documentación de la API con Swagger/OpenAPI -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
@@ -65,7 +95,8 @@
             <artifactId>springdoc-openapi-webmvc-core</artifactId>
             <version>1.6.9</version>
         </dependency>
-        <!-- Security dependencies -->
+
+        <!-- Dependencias de seguridad para la autenticación y autorización -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
@@ -73,21 +104,29 @@
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
+            <version>0.9.1</version> <!-- Java JWT: para la creación y validación de tokens JWT -->
         </dependency>
+
+        <!-- Dependencias para pruebas unitarias y de integración -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <scope>test</scope> <!-- Esta dependencia solo está disponible en el classpath de prueba -->
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>test</scope>
+            <scope>test</scope> <!-- Base de datos en memoria para pruebas -->
         </dependency>
     </dependencies>
+
+    <!--
+    Sección de construcción del proyecto.
+    Aquí se configuran los plugins de Maven.
+    -->
     <build>
         <plugins>
+            <!-- Plugin de Spring Boot para empaquetar la aplicación como un JAR ejecutable -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
