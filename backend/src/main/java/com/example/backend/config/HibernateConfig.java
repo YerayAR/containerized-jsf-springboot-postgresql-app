@@ -1,4 +1,4 @@
-package com.example.backend;
+package com.example.backend.config;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

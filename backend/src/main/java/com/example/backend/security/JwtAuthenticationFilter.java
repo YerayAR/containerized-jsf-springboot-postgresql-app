@@ -1,4 +1,6 @@
-package com.example.backend;
+package com.example.backend.security;
+
+import com.example.backend.service.UserService;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

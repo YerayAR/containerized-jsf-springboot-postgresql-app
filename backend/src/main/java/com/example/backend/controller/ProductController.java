@@ -1,4 +1,7 @@
-package com.example.backend;
+package com.example.backend.controller;
+
+import com.example.backend.model.Product;
+import com.example.backend.service.ProductService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

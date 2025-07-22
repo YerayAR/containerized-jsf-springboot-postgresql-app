@@ -1,4 +1,6 @@
-package com.example.backend;
+package com.example.backend.repository;
+
+import com.example.backend.model.Product;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

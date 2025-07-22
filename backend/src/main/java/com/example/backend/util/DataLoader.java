@@ -1,4 +1,9 @@
-package com.example.backend;
+package com.example.backend.util;
+
+import com.example.backend.model.Product;
+import com.example.backend.model.User;
+import com.example.backend.repository.ProductRepository;
+import com.example.backend.repository.UserRepository;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -6,8 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
-
-import com.example.backend.User;
 
 @Component
 public class DataLoader implements CommandLineRunner {
