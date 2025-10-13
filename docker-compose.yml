@@ -2,62 +2,187 @@ version: '3.8'
 
 volumes:
   pgdata:
+    driver: local
   pgadmin_data:
+    driver: local
+  backend_logs:
+    driver: local
 
 networks:
   app-network:
+    driver: bridge
+    name: jsf-app-network
+  db-network:
+    driver: bridge
+    internal: true
+    name: jsf-db-network
 
 services:
   db:
-    image: postgres:13
+    image: postgres:16-alpine
+    container_name: jsf-postgres
     environment:
       POSTGRES_USER: appuser
-      POSTGRES_PASSWORD: securepass
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-SecurePass123!ChangeMeInProduction}
       POSTGRES_DB: productdb
+      POSTGRES_INITDB_ARGS: "--auth-local=scram-sha-256 --auth-host=scram-sha-256"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data:Z
+      - ./security/postgres.conf:/etc/postgresql/postgresql.conf:ro
     networks:
-      - app-network
+      - db-network
+    ports:
+      - "127.0.0.1:5432:5432"
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "appuser"]
+      test: ["CMD-SHELL", "pg_isready -U appuser -d productdb"]
       interval: 10s
+      timeout: 5s
       retries: 5
+      start_period: 30s
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    read_only: false
+    tmpfs:
+      - /tmp
+      - /var/run/postgresql
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUID
 
   backend:
-    build: ./backend
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: jsf-backend
     depends_on:
       db:
         condition: service_healthy
     networks:
       - app-network
+      - db-network
     environment:
-      SPRING_PROFILES_ACTIVE: default
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8080
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/productdb
+      SPRING_DATASOURCE_USERNAME: appuser
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-SecurePass123!ChangeMeInProduction}
+      JWT_SECRET: ${JWT_SECRET:-YourSuperSecretJWTKeyChangeThisInProduction123!}
+      JAVA_OPTS: "-Xms512m -Xmx1024m -XX:+UseG1GC -XX:+UseContainerSupport"
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - backend_logs:/app/logs
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    read_only: false
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: jsf-frontend
     ports:
-      - "8081:8080"
+      - "127.0.0.1:8081:8080"
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     networks:
       - app-network
+    environment:
+      BACKEND_URL: http://backend:8080
+      CATALINA_OPTS: "-Xms256m -Xmx512m -server"
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    read_only: false
+    tmpfs:
+      - /tmp
+      - /usr/local/tomcat/temp
+      - /usr/local/tomcat/work
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/app/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 45s
+
+  # Reverse proxy with SSL termination
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: jsf-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    networks:
+      - app-network
+    depends_on:
+      - frontend
+      - backend
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
 
   pgadmin:
-    image: dpage/pgadmin4:latest
+    image: dpage/pgadmin4:8
+    container_name: jsf-pgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_DEFAULT_EMAIL: admin@jsf-app.local
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-AdminPass123!ChangeMe}
+      PGADMIN_CONFIG_SERVER_MODE: 'True'
+      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: 'True'
+      PGADMIN_CONFIG_LOGIN_BANNER: 'JSF Application Database Admin'
+      PGADMIN_CONFIG_CONSOLE_LOG_LEVEL: 30
     ports:
-      - "5050:80"
+      - "127.0.0.1:5050:80"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
-      - app-network
+      - db-network
     volumes:
       - pgadmin_data:/var/lib/pgadmin
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID

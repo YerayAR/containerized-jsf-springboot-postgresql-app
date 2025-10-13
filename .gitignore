@@ -3,19 +3,110 @@
 *.jar
 *.war
 *.ear
+*.nar
+*.zip
+*.tar.gz
+*.rar
 
 # Maven
-/logs/
-/target/
+logs/
+target/
+build/
+out/
+dist/
 !.mvn/wrapper/maven-wrapper.jar
+.mvn/
+mvnw
+mvnw.cmd
 
 # IDEs
 .idea/
 .project
 .classpath
 .settings/
+.metadata/
+.vscode/
+*.iml
+*.iws
+*.ipr
+*.swp
+*.swo
+*~
+
+# Security and sensitive data
+.env
+.env.local
+.env.production
+.env.staging
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.jks
+*.keystore
+connection-strings.properties
+secrets.properties
+application-secrets.yml
+application-local.yml
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+*.h2.db
+*.trace.db
+*.lock.db
+
+# Docker
+.docker/
+docker-compose.override.yml
+docker-compose.local.yml
+
+# Logs
+*.log
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+hs_err_pid*
+replay_pid*
+spring.log
 
 # OS
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+Desktop.ini
 
+# Temporary files
+temp/
+tmp/
+*.tmp
+*.temp
+*.bak
+*.backup
+*.orig
+
+# Test and coverage
+jacoco.exec
+*.coveragexml
+coverage/
+test-results/
+*.pid
+*.gz
+
+# Node.js (if using for frontend tools)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Application specific
+volumes/
+!volumes/.gitkeep
+nginx/ssl/
+!nginx/ssl/.gitkeep
