@@ -14,13 +14,8 @@ RUN echo "========================================" && \
     echo "Maven version:" && mvn -version && \
     echo "Java version:" && java -version
 
-# Copy pom.xml first for better caching
+# Copy pom.xml and source code
 COPY pom.xml .
-RUN echo "DOCKERFILE - Downloading dependencies..." && \
-    mvn dependency:go-offline -B && \
-    echo "DOCKERFILE - Dependencies downloaded successfully"
-
-# Copy source code
 COPY src ./src
 RUN echo "DOCKERFILE - Source code copied" && \
     ls -la
