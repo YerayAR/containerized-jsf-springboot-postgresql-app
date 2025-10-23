@@ -59,15 +59,16 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT:-8080}/actuator/health || exit 1
 
 # Log startup and run application
-ENTRYPOINT echo "========================================" && \
-           echo "DOCKERFILE - Starting Spring Boot application" && \
-           echo "========================================" && \
-           echo "PORT: ${PORT:-8080}" && \
-           echo "DATABASE_URL: ${DATABASE_URL:-NOT_SET}" && \
-           echo "PGUSER: ${PGUSER:-NOT_SET}" && \
-           echo "Memory: $(free -m | awk 'NR==2{printf \"Total: %sMB, Used: %sMB, Free: %sMB\", $2, $3, $4}')" && \
-           echo "========================================" && \
-           exec java -XX:+UseContainerSupport \
-                -XX:MaxRAMPercentage=75.0 \
-                -Djava.security.egd=file:/dev/./urandom \
-                -jar app.jar
+CMD echo "========================================" && \
+    echo "DOCKERFILE - Starting Spring Boot application" && \
+    echo "========================================" && \
+    echo "PORT: ${PORT:-8080}" && \
+    echo "DATABASE_URL: ${DATABASE_URL:-NOT_SET}" && \
+    echo "PGUSER: ${PGUSER:-NOT_SET}" && \
+    echo "Memory: $(free -m 2>/dev/null | awk 'NR==2{printf \"Total: %sMB, Used: %sMB, Free: %sMB\", $2, $3, $4}' || echo 'N/A')" && \
+    echo "========================================" && \
+    exec java -XX:+UseContainerSupport \
+         -XX:MaxRAMPercentage=75.0 \
+         -Djava.security.egd=file:/dev/./urandom \
+         -Dserver.port=${PORT:-8080} \
+         -jar app.jar
