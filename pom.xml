@@ -45,12 +45,6 @@
         <!-- JoinFaces (JSF + PrimeFaces integration) -->
         <dependency>
             <groupId>org.joinfaces</groupId>
-            <artifactId>joinfaces-starter</artifactId>
-            <version>${joinfaces.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.joinfaces</groupId>
             <artifactId>primefaces-spring-boot-starter</artifactId>
             <version>${joinfaces.version}</version>
         </dependency>
