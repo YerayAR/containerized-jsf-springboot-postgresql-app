@@ -4,7 +4,7 @@ dockerfilePath = "Dockerfile"
 
 [deploy]
 startCommand = ""
-healthcheckPath = "/actuator/health"
+healthcheckPath = "/actuator/health/readiness"
 healthcheckTimeout = 600
 restartPolicyType = "NEVER"
 
